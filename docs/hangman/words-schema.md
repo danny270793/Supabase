@@ -156,41 +156,38 @@ USING (true);
 
 #### Write Access (INSERT/UPDATE/DELETE)
 - **No policies** for regular users
-- Only **service role** or **admin panel** can modify data
+- Only migrations (or the service role) can modify data
 - This ensures data integrity and prevents abuse
 
 ## Data Migration
 
-To populate the database with words from existing JSON files, you can create a script or use the Supabase admin panel.
+The word list is seeded by migration `20261005120100_hangman_seed_words.sql` (1041 English and 1003 Spanish words). To add, remove, or retag words, create a new migration in this repo:
+
+```sh
+supabase migration new hangman_add_words
+```
 
 ### Example: Adding a Word with Tags
 
-1. Insert the word:
 ```sql
-INSERT INTO public.hangman_words (word, difficulty_value, locale)
-VALUES ('elephant', 60, 'en')
-RETURNING id;
+insert into public.hangman_words (word, locale, difficulty_value)
+values ('ELEPHANT', 'en', 50)  -- the trigger replaces difficulty_value
+on conflict (word, locale) do nothing;
+
+insert into public.hangman_tags (tag, locale)
+values ('large mammal', 'en'), ('has a trunk', 'en')
+on conflict (tag, locale) do nothing;
+
+insert into public.hangman_word_tags (word_id, tag_id)
+select w.id, t.id
+from public.hangman_words w
+join public.hangman_tags t on t.locale = w.locale
+where w.word = 'ELEPHANT' and w.locale = 'en'
+  and t.tag in ('large mammal', 'has a trunk')
+on conflict do nothing;
 ```
 
-2. Insert tags (if they don't exist):
-```sql
-INSERT INTO public.hangman_tags (tag, locale)
-VALUES 
-  ('large mammal', 'en'),
-  ('has a trunk', 'en'),
-  ('largest land animal', 'en')
-ON CONFLICT (tag, locale) DO UPDATE SET tag = EXCLUDED.tag
-RETURNING id;
-```
-
-3. Link word to tags:
-```sql
-INSERT INTO hangman_word_tags (word_id, tag_id)
-VALUES 
-  (1, 1),  -- elephant -> large mammal
-  (1, 2),  -- elephant -> has a trunk
-  (1, 3);  -- elephant -> largest land animal
-```
+Store words in uppercase; the app strips accents when it plays them.
 
 ## Difficulty Value System
 
