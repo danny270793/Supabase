@@ -1,6 +1,6 @@
 # Gym Tracker schema
 
-Migration: [`20261108120000_gym_tracker.sql`](../../supabase/migrations/20261108120000_gym_tracker.sql).
+Migrations: [`20261108120000_gym_tracker.sql`](../../supabase/migrations/20261108120000_gym_tracker.sql), [`20261109120000_gym_exercises_weight_unit.sql`](../../supabase/migrations/20261109120000_gym_exercises_weight_unit.sql).
 
 ```mermaid
 erDiagram
@@ -15,7 +15,7 @@ erDiagram
 
 | Table | What it holds |
 |---|---|
-| `gym_exercises` | Reusable exercise: name, `primaryMuscles` / `secondaryMuscles` (`text[]`), `equipment`, `loadType` (`weight` = pounds, `discs` = stack plates), notes, `imagePaths` in Storage. |
+| `gym_exercises` | Reusable exercise: name, `primaryMuscles` / `secondaryMuscles` (`text[]`), `equipment`, `loadType` (`weight` = pounds, `discs` = stack plates), `weightUnit` (`lb` default or `kg`: the unit a weight exercise is logged and shown in), notes, `imagePaths` in Storage. |
 | `gym_routines` | A reusable training day (e.g. *Push*). |
 | `gym_routine_exercises` | Ordered (`position`) planned lines: `sets`, `reps`, optional `load`. |
 | `gym_weekly_plan` | `weekday` 1 (Monday) .. 7 → routine. No row = rest day. PK (`userId`, `weekday`). |
@@ -26,7 +26,7 @@ erDiagram
 - Every table has `"userId"` and the same four RLS policies (`auth.uid() = "userId"`); `anon` has no access.
 - Child rows reference their parent and exercise through (`id`, `"userId"`), so a row cannot point at another user's data.
 - `gym_exercises`, `gym_routines` and `gym_workouts` are soft-deleted (`deletedAt`). Workout history keeps pointing at deleted exercises.
-- `load` is numeric: pounds for `loadType = 'weight'`, a disc count for `'discs'`. The app converts pounds to kg for display only.
+- `load` is numeric: pounds for `loadType = 'weight'` (whatever `weightUnit` says; the app converts for display), a disc count for `'discs'`.
 
 ## RPCs
 
