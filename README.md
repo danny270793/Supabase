@@ -14,6 +14,7 @@ The apps share one `public` schema and one `auth.users` table, so every table, v
 | Hangman | [danny270793/Hangman](https://github.com/danny270793/Hangman) | `hangman_` |
 | MyPills | [danny270793/MyPills](https://github.com/danny270793/MyPills) | `health_` |
 | Gym Tracker | [danny270793/Gym-Tracker](https://github.com/danny270793/Gym-Tracker) | `gym_` |
+| MMA ScoreCard | [danny270793/MMAScoreCard](https://github.com/danny270793/MMAScoreCard) | `mma_` |
 
 Accounts are shared: a user who signs up in one app can sign in to the others with the same email and password.
 
@@ -53,6 +54,7 @@ Never run `supabase db reset --linked`. It drops the tables of every app.
 ## App docs
 
 - [Gym Tracker schema](docs/gym/schema.md)
+- [MMA ScoreCard schema](docs/mma/schema.md)
 - [Hangman words schema](docs/hangman/words-schema.md)
 - [Hangman game records](docs/hangman/game-records-table.md)
 - [Hangman difficulty calculation](docs/hangman/difficulty-calculation.md)
