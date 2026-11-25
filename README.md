@@ -15,6 +15,7 @@ The apps share one `public` schema and one `auth.users` table, so every table, v
 | MyPills | [danny270793/MyPills](https://github.com/danny270793/MyPills) | `health_` |
 | Gym Tracker | [danny270793/Gym-Tracker](https://github.com/danny270793/Gym-Tracker) | `gym_` |
 | MMA ScoreCard | [danny270793/MMAScoreCard](https://github.com/danny270793/MMAScoreCard) | `mma_` |
+| Certifications Tracker | [danny270793/Certifications-Tracker](https://github.com/danny270793/Certifications-Tracker) | `cert_` |
 
 Accounts are shared: a user who signs up in one app can sign in to the others with the same email and password.
 
